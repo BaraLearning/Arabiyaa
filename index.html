@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Bahasa Arab Kelas 8</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- TEMA WARNA & BACKGROUND --- */
+        :root {
+            --primary: #006D77;
+            --secondary: #E29578;
+            --bg-fallback: #8B0000;
+            --glass: rgba(255, 255, 255, 0.95);
+            --text-dark: #2C3E50;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-fallback);
+            color: var(--text-dark);
+            /* Background Alam Bergerak */
+            background-image: url('https://source.unsplash.com/1600x900/?nature,forest');
+            background-size: 120% 120%;
+            background-position: center;
+            background-attachment: fixed;
+            animation: moveBg 40s linear infinite alternate;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        @keyframes moveBg {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .arab { font-family: 'Scheherazade New', serif; font-size: 1.4em; direction: rtl; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center; margin-bottom: 30px; padding: 20px;
+            background: rgba(0, 109, 119, 0.9); color: white;
+            border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+        header h1 { font-size: 1.5rem; margin-bottom: 5px; }
+
+        /* --- GRID MENU --- */
+        .menu-grid {
+            display: grid; grid-template-columns: 1fr; gap: 15px;
+        }
+        @media (min-width: 600px) { .menu-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 992px) { .menu-grid { grid-template-columns: repeat(5, 1fr); } }
+
+        .menu-card {
+            background: var(--glass); padding: 20px; border-radius: 15px;
+            text-align: center; cursor: pointer; transition: transform 0.2s, background 0.3s;
+            border-bottom: 5px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 160px;
+        }
+        .menu-card:hover { transform: translateY(-5px); background: #fff; border-color: var(--secondary); }
+        .menu-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .menu-title { font-weight: 700; font-size: 0.9rem; }
+        .menu-arab { color: var(--primary); font-size: 1.1rem; }
+
+        /* --- MODAL SYSTEM (TEMPLATE) --- */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8);
+            z-index: 1000; justify-content: center; align-items: center; padding: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #fff; width: 100%; max-width: 700px;
+            border-radius: 20px; padding: 25px; position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-height: 90vh; overflow-y: auto; animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .close-btn {
+            position: absolute; top: 15px; right: 15px; font-size: 1.5rem;
+            color: #666; cursor: pointer; background: #eee;
+            width: 35px; height: 35px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s; z-index: 10;
+        }
+        .close-btn:hover { background: #ff4d4d; color: white; }
+
+        .modal-header { border-bottom: 2px dashed var(--secondary); padding-bottom: 10px; margin-bottom: 20px; }
+        .modal-header h2 { color: var(--primary); }
+
+        /* --- CONTENT STYLES --- */
+        
+        /* 1. Menu List Style (Untuk memilih Materi) */
+        .content-menu-list { display: grid; gap: 10px; }
+        .btn-menu-item {
+            display: flex; align-items: center; background: #f8f9fa;
+            border: 2px solid #e9ecef; padding: 15px; border-radius: 12px;
+            cursor: pointer; transition: 0.2s; text-align: left;
+        }
+        .btn-menu-item:hover { border-color: var(--primary); background: #e0f7fa; transform: translateX(5px); }
+        .btn-icon { font-size: 2rem; margin-right: 15px; width: 40px; text-align: center; }
+        .btn-text h4 { font-size: 1rem; margin-bottom: 2px; color: var(--text-dark); }
+        .btn-text span { font-size: 1.1rem; color: var(--secondary); }
+
+        /* 2. Media Embed Style (Video/Image) */
+        .media-container { width: 100%; margin-top: 10px; border-radius: 10px; overflow: hidden; background: #000; }
+        .media-frame { width: 100%; height: 400px; border: none; display: block; }
+        
+        /* 3. Link/Quiz Button Style */
+        .btn-link-action {
+            display: block; width: 100%; padding: 15px;
+            background: var(--primary); color: white; text-align: center;
+            text-decoration: none; border-radius: 50px; font-weight: bold;
+            margin-top: 15px; transition: 0.3s;
+        }
+        .btn-link-action:hover { background: var(--secondary); }
+
+        /* 4. Navigation inside Modal */
+        .back-modal-btn {
+            background: none; border: none; color: #666; cursor: pointer;
+            font-size: 0.9rem; display: flex; align-items: center; gap: 5px;
+            margin-bottom: 15px;
+        }
+        .back-modal-btn:hover { color: var(--primary); text-decoration: underline; }
+
+        /* Team Grid */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .team-member { border: 1px solid #eee; padding: 15px; border-radius: 10px; text-align: center; }
+        .avatar { width: 70px; height: 70px; background: var(--primary); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>ARABIYA KELAS 8</h1>
+        <p>Media Pembelajaran Bahasa Arab Interaktif MTs</p>
+    </header>
+
+    <div class="menu-grid" id="main-menu-container">
+        </div>
+</div>
+
+<div id="universal-modal" class="modal" onclick="closeModalOutside(event)">
+    <div class="modal-content">
+        <div class="close-btn" onclick="closeModal()">&times;</div>
+        
+        <button id="modal-back-btn" class="back-modal-btn" style="display: none;" onclick="backToChapterMenu()">
+            ⬅️ Kembali ke Menu Bab
+        </button>
+
+        <div class="modal-header">
+            <h2 id="modal-title">Judul Modal</h2>
+            <p id="modal-subtitle" class="arab"></p>
+        </div>
+
+        <div id="modal-body">
+            </div>
+    </div>
+</div>
+
+<script>
+    // --- DATABASE KONTEN (EDIT DI SINI) ---
+    const appData = {
+        tujuan: {
+            id: 'tujuan', icon: '🎯', title: 'Tujuan Pembelajaran', arab: 'أهداف التعلم',
+            type: 'list',
+            content: [
+                { icon: '🧠', text: 'Mampu <strong>memahami</strong> fungsi sosial & struktur teks <span class="arab">الْجُمْلَةُ الْفِعْلِيَّةُ</span>.' },
+                { icon: '🗣️', text: 'Mampu <strong>mendemonstrasikan</strong> tindak tutur lisan & tulisan.' },
+                { icon: '🔍', text: 'Mampu <strong>menganalisis</strong> gagasan dari teks sederhana.' },
+                { icon: '📢', text: 'Mampu <strong>menyajikan</strong> hasil analisis gagasan.' }
+            ]
+        },
+        bab1: {
+            id: 'bab1', icon: '⏰', title: 'Bab 1: Jam', arab: 'السَّاعَةُ',
+            type: 'chapter',
+            materials: [
+                { type: 'embed', label: 'Percakapan', arab: 'الْحِوَارُ', icon: '🗣️', url: 'https://drive.google.com/file/d/1KW4iDT8ogcqZnwN3L5rqKf_m7hDBI3HB/view?usp=sharing' },
+                { type: 'embed', label: 'Materi', arab: 'الْمَادَّةُ', icon: '📚', url: 'https://drive.google.com/file/d/1ZcctFIlR7Wro5OaB_0c44x4hc6ejiyVA/view?usp=sharing' },
+                { type: 'embed', label: 'Latihan Membaca', arab: 'الْقِرَاءَةُ', icon: '📖', url: 'https://drive.google.com/file/d/1J5MpdvWt6m2ILJypUvyljR2RoHsSf3ih/view?usp=sharing' }
+            ]
+        },
+        bab2: {
+            id: 'bab2', icon: '📅', title: 'Bab 2: Keseharian', arab: 'يَوْمِيَّاتُنَا',
+            type: 'chapter',
+            materials: [
+                { type: 'embed', label: 'Materi', arab: 'الْمَادَّةُ', icon: '📚', url: 'https://drive.google.com/file/d/1ecanpiQe-2hlesRq3Wu5CVddSxyUBSCJ/view?usp=sharing' },
+                { type: 'embed', label: "Istima'", arab: 'الِاسْتِمَاعُ', icon: '🎧', url: 'https://drive.google.com/file/d/1Ux2a85o_QYLyJ9LUckn8sfEdZIj0R3db/view?usp=sharing' },
+                { type: 'embed', label: 'Bacaan', arab: 'الْقِرَاءَةُ', icon: '📖', url: 'https://drive.google.com/file/d/1rczHLy1zD937NDDQOOPPvfROqC3_P_gl/view?usp=sharing' },
+                { type: 'link', label: 'Latihan Soal', arab: 'التَّدْرِيْبَاتُ', icon: '📝', url: 'https://www.proprofs.com/quiz-school/ugc/story.php?title=ndqxotu1mwydvr' }
+            ]
+        },
+        bab3: {
+            id: 'bab3', icon: '🎨', title: 'Bab 3: Hobi', arab: 'الْهِوَايَةُ',
+            type: 'chapter',
+            materials: [
+                { type: 'embed', label: 'Mufrodat', arab: 'الْمُفْرَدَاتُ', icon: '📓', url: 'https://drive.google.com/file/d/1nj2RaTA1xaIrIffHAg96wB_XcfBzbe3p/view?usp=sharing' },
+                { type: 'embed', label: "Istima'", arab: 'الِاسْتِمَاعُ', icon: '🎧', url: 'https://drive.google.com/file/d/1wzOHKyN5PmG783C1Lvs0dvfwm5urIy5N/view?usp=sharing' },
+                { type: 'link', label: 'Quiz', arab: 'الِاخْتِبَارُ', icon: '🧩', url: 'https://tugaspopuo.my.canva.site/salinan-dari-latihan-soal-interaktif-tema-hobi-pilihan-ganda-susun-kata' }
+            ]
+        },
+        bab4: {
+            id: 'bab4', icon: '🏆', title: 'Bab 4: Olahraga', arab: 'الرِّيَاضَةُ',
+            type: 'chapter',
+            materials: [
+                { type: 'embed', label: 'Materi', arab: 'الْمَادَّةُ', icon: '📚', url: 'https://drive.google.com/file/d/12n15GHgLfN0DIe0P2EOn5gOOmRQ1j13s/view?usp=sharing' },
+                { type: 'embed', label: 'Video Muhawaroh', arab: 'فِيدِيُو الْمُحَاوَرَةِ', icon: '🎬', url: 'https://drive.google.com/file/d/1yePy-BAc1zi8qfRPWzYmQv2VWAf_pfbw/view?usp=sharing' },
+                { type: 'embed', label: 'Hiwar & Latihan', arab: 'الْحِوَارُ', icon: '🗣️', url: 'https://drive.google.com/file/d/1mYfXp8Z9c7_ACH1E1ohbd1TZyx0o-cJI/view?usp=sharing' },
+                { type: 'link', label: 'Quiz', arab: 'الِاخْتِبَارُ', icon: '🧩', url: 'https://wayground.com/admin/quiz/68ef500bc6a73847ccb626d5' }
+            ]
+        },
+        uts: {
+            id: 'uts', icon: '📝', title: 'UTS', arab: 'الاِخْتِبَارُ النِّصْفِيُّ',
+            type: 'link_direct',
+            url: 'https://forms.gle/7xabn2bgt8QwxN9s7',
+            desc: 'Silakan kerjakan Evaluasi Tengah Semester melalui tombol di bawah.'
+        },
+        bab5: {
+            id: 'bab5', icon: '💼', title: 'Bab 5: Profesi', arab: 'الْمِهْنَةُ',
+            type: 'chapter',
+            materials: [
+                { type: 'embed', label: 'Mufrodat', arab: 'الْمُفْرَدَاتُ', icon: '📓', url: 'https://drive.google.com/file/d/1gjeJD79pCnucBe14dXeH1pn1IlyUCWsi/view?usp=sharing' },
+                { type: 'embed', label: "'Ibaaroh", arab: 'عِبَارَةٌ', icon: '📖', url: 'https://drive.google.com/file/d/1fX4Elqq9j5fB8eOZEfjgq4oQza9Vh4sx/view?usp=sharing' },
+                { type: 'embed', label: 'Muhawaroh', arab: 'مُحَاوَرَةٌ', icon: '🗣️', url: 'https://drive.google.com/file/d/1fX4Elqq9j5fB8eOZEfjgq4oQza9Vh4sx/view?usp=sharing' },
+                { type: 'link', label: 'Quiz', arab: 'الِاخْتِبَارُ', icon: '🧩', url: 'https://www.liveworksheets.com/worksheet/ar/english-language-vocabulary/8281738' }
+            ]
+        },
+        bab6: {
+            id: 'bab6', icon: '🏥', title: 'Bab 6: Menjenguk', arab: 'عِيَادَةُ الْمَرِيْضِ',
+            type: 'chapter',
+            materials: [
+                { type: 'embed', label: 'Mufrodat', arab: 'الْمُفْرَدَاتُ', icon: '📓', url: 'https://drive.google.com/file/d/10iQLdrt5tr8wyGP9srr0pjzszohdc2Eh/view?usp=sharing' },
+                { type: 'embed', label: 'Latihan Membaca', arab: 'الْقِرَاءَةُ', icon: '📖', url: 'https://drive.google.com/file/d/1Pg-o0AFVeVvSMEA5L79xOGBcFPfDBsss/view?usp=sharing' },
+                { type: 'embed', label: 'Percakapan', arab: 'الْحِوَارُ', icon: '🗣️', url: 'https://drive.google.com/file/d/1M5L8yL_NaSOy3ek5V-8aMBpPItGquI3O/view?usp=sharing' },
+                { type: 'link', label: 'Quiz', arab: 'الِاخْتِبَارُ', icon: '🧩', url: 'https://abrohman001.my.canva.site/latihansoal-kelas-8-bahasa-arab' }
+            ]
+        },
+        uas: {
+            id: 'uas', icon: '🎓', title: 'UAS', arab: 'الاِخْتِبَارُ النِّهَائِيُّ',
+            type: 'link_direct',
+            url: 'https://docs.google.com/forms/d/e/1FAIpQLSdcvdmiY-F78uwSwRDQeFdYw8gieOZ8mSfMGfSludaFrC3diw/viewform?usp=publish-editor',
+            desc: 'Silakan kerjakan Evaluasi Akhir Semester melalui tombol di bawah.'
+        },
+        tim: {
+            id: 'tim', icon: '👥', title: 'Tentang Kami', arab: 'فَرِيْقُ الْعَمَلِ',
+            type: 'team',
+            members: [
+                { name: 'Ahmad Dzaky Mubarok', nim: '223121105', link: 'https://bara.ituaku.site' },
+                { name: 'Naufal Humam Wibobo', nim: '223121109' },
+                { name: 'Siti Aisyah', nim: '223121099' },
+                { name: 'Layla Tri Agustin', nim: '223121100' }
+            ]
+        }
+    };
+
+    // --- VARIABLES ---
+    let currentChapterKey = null;
+
+    // --- GENERATE MENU UTAMA ---
+    const menuContainer = document.getElementById('main-menu-container');
+    const keys = ['tujuan', 'bab1', 'bab2', 'bab3', 'bab4', 'uts', 'bab5', 'bab6', 'uas', 'tim'];
+
+    keys.forEach(key => {
+        const item = appData[key];
+        const card = document.createElement('div');
+        card.className = 'menu-card';
+        card.onclick = () => openModal(key);
+        card.innerHTML = `
+            <div class="menu-icon">${item.icon}</div>
+            <div class="menu-title">${item.title}</div>
+            <div class="menu-arab">${item.arab}</div>
+        `;
+        menuContainer.appendChild(card);
+    });
+
+    // --- FUNGSI MODAL ---
+    function openModal(key) {
+        currentChapterKey = key;
+        const data = appData[key];
+        const modal = document.getElementById('universal-modal');
+        const title = document.getElementById('modal-title');
+        const subtitle = document.getElementById('modal-subtitle');
+        const body = document.getElementById('modal-body');
+        const backBtn = document.getElementById('modal-back-btn');
+
+        title.innerText = data.title;
+        subtitle.innerText = data.arab;
+        backBtn.style.display = 'none'; // Reset back button
+        body.innerHTML = ''; // Clear content
+
+        // 1. Tipe Bab (Chapter) - List Menu
+        if (data.type === 'chapter') {
+            const list = document.createElement('div');
+            list.className = 'content-menu-list';
+            data.materials.forEach((mat, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'btn-menu-item';
+                btn.onclick = () => openContentDetail(index);
+                btn.innerHTML = `
+                    <div class="btn-icon">${mat.icon}</div>
+                    <div class="btn-text">
+                        <h4>${mat.label}</h4>
+                        <span class="arab">${mat.arab}</span>
+                    </div>
+                `;
+                list.appendChild(btn);
+            });
+            body.appendChild(list);
+        }
+        // 2. Tipe List Tujuan
+        else if (data.type === 'list') {
+            const ul = document.createElement('ul');
+            ul.style.listStyle = 'none';
+            data.content.forEach(c => {
+                const li = document.createElement('li');
+                li.style = 'background:#f9f9f9; padding:10px; margin-bottom:10px; border-radius:10px; display:flex; gap:10px; border-left:4px solid var(--primary);';
+                li.innerHTML = `<span style="font-size:1.5rem">${c.icon}</span> <span>${c.text}</span>`;
+                ul.appendChild(li);
+            });
+            body.appendChild(ul);
+        }
+        // 3. Tipe Link Langsung (UTS/UAS)
+        else if (data.type === 'link_direct') {
+            body.innerHTML = `
+                <p style="text-align:center; margin-bottom:10px;">${data.desc}</p>
+                <a href="${data.url}" target="_blank" class="btn-link-action">Buka ${data.title}</a>
+            `;
+        }
+        // 4. Tipe Tim
+        else if (data.type === 'team') {
+            const grid = document.createElement('div');
+            grid.className = 'team-grid';
+            data.members.forEach(m => {
+                let linkHtml = m.link ? `<a href="${m.link}" target="_blank" style="color:var(--primary); font-size:0.8rem; display:block; margin-top:5px;">${m.link.replace('https://','')}</a>` : '';
+                const member = document.createElement('div');
+                member.className = 'team-member';
+                member.innerHTML = `
+                    <div class="avatar">${m.name.includes('Siti') || m.name.includes('Layla') ? '👩‍🎓' : '👨‍🎓'}</div>
+                    <h3>${m.name}</h3>
+                    <p style="font-size:0.8rem">NIM: ${m.nim}</p>
+                    ${linkHtml}
+                `;
+                grid.appendChild(member);
+            });
+            body.appendChild(grid);
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    // --- FUNGSI BUKA KONTEN DETAIL (EMBED) ---
+    function openContentDetail(index) {
+        const data = appData[currentChapterKey].materials[index];
+        const title = document.getElementById('modal-title');
+        const body = document.getElementById('modal-body');
+        const backBtn = document.getElementById('modal-back-btn');
+
+        // Simpan state judul asli bab
+        title.setAttribute('data-original', title.innerText);
+        
+        // Ubah judul jadi judul materi
+        title.innerText = data.label;
+        backBtn.style.display = 'flex'; // Munculkan tombol kembali
+
+        // Render Konten
+        if (data.type === 'embed') {
+            // Ubah link "view?usp=sharing" jadi "preview" agar bisa di-embed
+            let embedUrl = data.url.replace('view?usp=sharing', 'preview');
+            // Cek jika gambar (untuk direct image tag) - opsional, tapi drive preview biasanya iframe
+            body.innerHTML = `
+                <div class="media-container">
+                    <iframe src="${embedUrl}" class="media-frame" allow="autoplay"></iframe>
+                </div>
+                <div style="text-align:center; margin-top:10px;">
+                    <small>Jika tidak muncul, <a href="${data.url}" target="_blank" style="color:var(--primary)">Klik di sini</a></small>
+                </div>
+            `;
+        } else if (data.type === 'link') {
+            body.innerHTML = `
+                <div style="text-align:center; padding: 20px;">
+                    <div style="font-size:4rem; margin-bottom:10px;">${data.icon}</div>
+                    <p>Materi ini berbentuk interaktif/kuis di halaman eksternal.</p>
+                    <a href="${data.url}" target="_blank" class="btn-link-action">Buka ${data.label}</a>
+                </div>
+            `;
+        }
+    }
+
+    // --- KEMBALI KE MENU BAB ---
+    function backToChapterMenu() {
+        openModal(currentChapterKey);
+    }
+
+    function closeModal() {
+        document.getElementById('universal-modal').style.display = 'none';
+    }
+
+    function closeModalOutside(event) {
+        if (event.target.id === 'universal-modal') {
+            closeModal();
+        }
+    }
+</script>
+
+</body>
+</html>
